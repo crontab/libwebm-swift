@@ -4,3 +4,10 @@ workspace-state.json
 .DS_Store
 Build/
 mkvalidator
+/Packages
+*.xcworkspace
+xcuserdata/
+xcshareddata/
+.swiftpm
+.cursor/
+.vscode/
