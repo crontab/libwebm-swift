@@ -1,11 +1,10 @@
-// swift-tools-version: 5.9
+// swift-tools-version: 6.1
 import PackageDescription
 
 let package = Package(
     name: "LibWebMSwift",
     platforms: [
-        .iOS(.v13),
-        .macOS(.v10_15),
+        .iOS(.v18),
     ],
     products: [
         .library(
@@ -17,35 +16,10 @@ let package = Package(
         .package(url: "https://github.com/alta/swift-opus.git", from: "0.0.0")
     ],
     targets: [
-        .target(
-            name: "libwebm",
-            dependencies: [],
-            path: "Sources/libwebm",
-            sources: [
-                "mkvparser/mkvparser.cc",
-                "mkvparser/mkvreader.cc",
-                "mkvmuxer/mkvmuxer.cc",
-                "mkvmuxer/mkvmuxerutil.cc",
-                "mkvmuxer/mkvwriter.cc",
-                "common/webm_endian.cc",
-            ],
-            publicHeadersPath: ".",
-            cxxSettings: [
-                .headerSearchPath("."),
-                .headerSearchPath("mkvparser"),
-                .headerSearchPath("mkvmuxer"),
-                .headerSearchPath("common"),
-                .define("MKVPARSER_HEADER_ONLY", to: "0"),
-                .define("MKVMUXER_HEADER_ONLY", to: "0"),
-                .define("_LIBCPP_DISABLE_AVAILABILITY", to: "1"),
-            ],
-            linkerSettings: [
-                .linkedLibrary("c++")
-            ]
-        ),
+        .binaryTarget(name: "WebM.framework", path: "Sources/libwebm/framework/WebM.xcframework"),
         .target(
             name: "CLibWebM",
-            dependencies: ["libwebm"],
+            dependencies: ["WebM.framework"],
             path: "Sources/CLibWebM",
             publicHeadersPath: "include",
             cxxSettings: [
